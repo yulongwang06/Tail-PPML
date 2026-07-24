@@ -1,0 +1,14 @@
+v 3
+d ppmlmn — PPML gravity estimation with two-way fixed effects and a
+d country-level m-out-of-n bootstrap for heavy-tailed (Pareto, tail
+d index in (1,2)) inference.
+d
+d Companion to Egger, Ji, and Wang, "PPML and Heavy-Tailed Trade Flows:
+d Why Standard Inference Fails and How to Fix It."
+d
+d Author: Yulong Wang
+d Support: https://sites.google.com/site/yulongwanghome/
+d Distribution-Date: <fill in date>
+d
+f ppmlmn.ado
+f ppmlmn.sthlp

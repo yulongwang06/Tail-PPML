@@ -1,0 +1,5 @@
+v 3
+d Yulong Wang — Stata packages
+d {browse "https://sites.google.com/site/yulongwanghome/"}
+d
+p ppmlmn   PPML gravity with a country-level m-out-of-n bootstrap (heavy-tailed inference)
