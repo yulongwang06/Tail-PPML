@@ -1,10 +1,13 @@
-*! ppmlmn 1.0.0  <fill in date>   Yulong Wang
+*! ppmlmn 1.1.0  <fill in date>   Yulong Wang
 *! PPML gravity estimation with two-way fixed effects and a country-level
 *! m-out-of-n bootstrap for heavy-tailed inference.
 *! https://sites.google.com/site/yulongwanghome/
 *!
 *! Reference: Egger, Ji, and Wang, "PPML and Heavy-Tailed Trade Flows:
 *! Why Standard Inference Fails and How to Fix It."
+*!
+*! 1.1.0: the bootstrap interval is symmetric, b -/+ q*se, with q the
+*!        level quantile of |T_j|, T_j = (b_j - b)/se_j.
 *-----------------------------------------------------------------------------
 
 program define ppmlmn, eclass sortpreserve
@@ -136,7 +139,8 @@ program define ppmlmn_display
     di as txt "{hline 13}{c +}{hline 65}"
     di as txt "Note: bootstrap interval is robust to Pareto-tailed shocks " ///
         "(tail index in (1,2));"
-    di as txt "      the HC0 sandwich interval is not. See {help ppmlmn}."
+    di as txt "      it is symmetric about the coefficient. The HC0 sandwich interval"
+    di as txt "      is not robust. See {help ppmlmn}."
 end
 
 
@@ -293,7 +297,7 @@ real matrix country_boot(real colvector y, real matrix X, real colvector uo,
     real scalar M, real scalar G, real scalar tau, string scalar stud,
     real colvector nrep, real scalar dots)
 {
-    real scalar    p, j, ka, k, wi, drop, every, did
+    real scalar    p, j, ka, k, wi, drop, every, did, q
     real matrix    T, ci, Xs
     real colvector sel, msk, rows_in, ys, active, frag, bj, sj, bad, lo, hi, pick, perm
     struct grp     go, gd
@@ -335,8 +339,9 @@ real matrix country_boot(real colvector y, real matrix X, real colvector uo,
     for (k=1; k<=p; k++) {
         nrep[k] = sum(T[,k] :< .)
         if (nrep[k] >= 20) {
-            lo[k] = beta[k] - _quantile(T[,k], 1-tau/2)*se[k]
-            hi[k] = beta[k] - _quantile(T[,k], tau/2)*se[k]
+            q = _quantile(abs(T[,k]), 1-tau)
+            lo[k] = beta[k] - q*se[k]
+            hi[k] = beta[k] + q*se[k]
         }
     }
     ci = (lo, hi); return(ci)
