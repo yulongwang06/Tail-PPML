@@ -1,5 +1,5 @@
 {smcl}
-{* version 1.0.0  <fill in date>}{...}
+{* version 1.1.0  <fill in date>}{...}
 {vieweralsosee "[R] poisson" "help poisson"}{...}
 {viewerjumpto "Syntax" "ppmlmn##syntax"}{...}
 {viewerjumpto "Description" "ppmlmn##description"}{...}
@@ -63,9 +63,10 @@ the PPML score has infinite variance and the sandwich interval under-covers: its
 coverage falls well below the nominal level. The bootstrap interval remains valid
 in this regime. It draws {it:G} countries without replacement, keeps the induced
 subnetwork of dyads, refits the two-way fixed-effect PPML on that subnetwork, and
-self-normalizes each subsample slope by its own sandwich standard error. The
-confidence limits invert the empirical quantiles of these self-normalized
-statistics.{p_end}
+self-normalizes each subsample slope by its own sandwich standard error,
+{it:T_j} = ({it:b_j} - {it:b})/{it:se_j}. The interval is symmetric about the
+coefficient, {it:b} -/+ {it:q} {it:se}, where {it:q} is the {cmd:level()}
+quantile of the absolute statistics |{it:T_j}|.{p_end}
 
 {pstd}
 Fixed effects are profiled out by Sinkhorn (matrix balancing); slopes are
@@ -140,7 +141,7 @@ postestimation works:{p_end}
 {synopt :{cmd:e(b)}}coefficient vector{p_end}
 {synopt :{cmd:e(V)}}HC0 sandwich variance{p_end}
 {synopt :{cmd:e(ci_hc0)}}HC0 confidence interval ({it:k} x 2){p_end}
-{synopt :{cmd:e(ci_boot)}}bootstrap confidence interval ({it:k} x 2){p_end}
+{synopt :{cmd:e(ci_boot)}}symmetric bootstrap confidence interval ({it:k} x 2){p_end}
 {synopt :{cmd:e(se_boot)}}studentizer used by the bootstrap{p_end}
 {synopt :{cmd:e(nrep)}}valid bootstrap draws per coefficient{p_end}
 
